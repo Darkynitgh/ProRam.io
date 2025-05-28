@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es" class="light dark">
+
+<head>
+
+ <meta charset="UTF-8">
+ <title>ProRam con MD</title>
+
+ <!-- Resumen para los motores de búsqueda. -->
+ <meta name="description" content="Ejemplo de ProRam con Material Design">
+
+ <script src="js/registraServiceWorker.js"></script>
+
+ <meta name="viewport" content="width=device-width">
+
+ <!-- Color de la barra de navegación de Chrome en dispositivos móviles. -->
+ <meta name="theme-color" content="#fffbfe">
+
+ <!-- Ícono para la página web, que normalmente se pone en la raíz del sitio.
+  Puede ser diferente para cada página. -->
+ <link rel="icon" sizes="32x32" href="favicon.ico">
+
+ <!-- Configuración de la ProRam para Chrome, Edge y Safari.
+  Debe ponerse en todas las páginas. -->
+ <link rel="manifest" href="site.webmanifest">
+
+ <!-- Permite a los navegadores, que como Safari no soportan el estándar
+  completo de custom elementsm, lo cumplan totalmente. Debe ponerse en todas
+  las páginas. -->
+ <script src="ungap/custom-elements.js"></script>
+
+ <!-- Configuración de todas las páginas con JavaSript. -->
+ <script type="module" src="js/configura.js"></script>
+ <link rel="stylesheet" href="css/estilos.css">
+ <link rel="stylesheet" href="css/transicion_completa.css">
+
+</head>
+
+<body>
+
+ <form id="form" novalidate onsubmit="procesa(event)">
+
+  <md-top-app-bar>
+
+   <h1>Formulario de chistes</h1>
+
+   <button is="md-menu-button" slot="navigation"></button>
+
+  </md-top-app-bar>
+
+  <main>
+
+   <p>
+    <span class="md-filled-text-field" accesskey="G">
+     <md-select-menu id="selectGenero" required options="opcionesDeGenero"
+       oninput="copiaMensajes()"></md-select-menu>
+     <span>Alumno *</span>
+     <small id="supportingGenero">Obligatorio</small>
+    </span>
+   </p>
+
+   <p>
+    <button class="md-filled-button" style="width: 100%;">Recomendar</button>
+   </p>
+
+  </main>
+
+  <md-options-menu id="opcionesDeGenero" aria-label="Opciones de género">
+   <span data-value="" title="Selecciona género"></span>
+   <span data-value="Valeria">ALVA ORNELAS VALERIA</span>
+   <span data-value="Ulises">RELLANO FERIA ULISES JESUS</span>
+    <span data-value="Miguel">CASARIN HERNANDEZ MIGUEL ANGEL</span>
+   <span data-value="Cesar">CONTRERAS JACOBO CESAR EDUARDO</span>
+    <span data-value="Omar">GONZALEZ ROSETE OMAR JAIR</span>
+   <span data-value="Yair">LUNA LUNA FERNANDO YAIR</span>
+  </md-options-menu>
+
+  <nav-drw></nav-drw>
+
+ </form>
+
+ <script type="module">
+  import { muestraTextoDeAyuda } from "./lib/js/muestraTextoDeAyuda.js"
+  import { exportaAHtml } from "./lib/js/exportaAHtml.js"
+  import { muestraError } from "./lib/js/muestraError.js"
+
+  function copiaMensajes() {
+   muestraTextoDeAyuda(selectGenero, supportingGenero, "Obligatorio")
+  }
+  exportaAHtml(copiaMensajes)
+
+  /**
+   * @param {SubmitEvent} evt
+   */
+  function procesa(evt) {
+   evt.preventDefault()
+   try {
+    copiaMensajes()
+    if (
+     selectGenero.validity.valid) {
+     const genero = selectGenero.value
+     const resultado = recomienda(genero)
+     alert(resultado)
+    }
+   } catch (e) {
+    muestraError(e)
+   }
+  }
+  exportaAHtml(procesa)
+
+  /** @param {string} genero */
+ function recomienda(genero) {
+  // Recomendaciones musicales
+  if (genero === "Valeria") {
+    return "¿Sabes por qué Dua Lipa no puede abrir puertas? ¡Porque solo tiene 'una llipa'! 😄";
+  } else if (genero === "Ulises") {
+    return "¿Qué hace Bad Bunny cuando pierde el autobús? ¡Se queda 'bad bus'-y! 🐰";
+  } else if (genero === "Miguel") {
+    return "¿Qué le dijo Dua Lipa a su estilista? 'No me cortes mucho, ¡Dua Lipa poco!' ✂️";
+  } else if (genero === "Cesar") {
+    return "¿Por qué Bad Bunny nunca juega al escondite? ¡Porque siempre lo 'bad bun'-dean! 🎵";
+  } else if (genero === "Omar") {
+    return "¿Cómo se llama el primo de Dua Lipa? ¡Dos Lipas! 👯";
+  } else if (genero === "Yair") {
+    return "¿Qué estudia Bad Bunny en la universidad? ¡La carrera de 'Conejo-ología'! 🎓";
+  } 
+}
+ </script>
+
+</body>
+
+</html>
